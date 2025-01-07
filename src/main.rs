@@ -1,4 +1,8 @@
 use std::collections::HashMap;
+use std::{
+    thread::{self, sleep, Thread},
+    time::Duration,
+};
 
 fn main() {
     println!("Hello, world!");
@@ -182,4 +186,24 @@ fn double_tuple(val: (usize, i32)) -> (usize, i32) {
 // pub fn name(name_arg: type) -> type_ret /* pub facultative */
 fn execute(fonction: fn(i32, i32) -> i32) -> i32 {
     fonction(1, 3)
+}
+
+fn borrow_checker_util () {
+    // Data race
+    let mut ma_string = String::from("ceci est un test");
+    let thread_1 = thread::spawn(move || {
+        ma_string.push_str("!!!");
+        sleep(Duration::from_millis(500));
+    });
+    // Error
+    // let thread_2 = thread::spawn(move || {
+    //     ma_string.push_str("???");
+    //     sleep(Duration::from_millis(500));
+    // });
+
+    thread_1.join();
+    // thread_2.join();
+
+    // Error
+    // println!("ma string {ma_string}");
 }
