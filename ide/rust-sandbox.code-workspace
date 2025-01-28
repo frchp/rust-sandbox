@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.encoding": "utf8",
+		"editor.tabSize": 2,
+		"terminal.integrated.defaultProfile.windows": "Git Bash"
+	}
+}
