@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "Debug",
+          "cwd": "${workspaceFolder}",
+          "executable": "${workspaceFolder}/target/thumbv8m.main-none-eabihf/debug/rust-sandbox",
+          "request": "launch",
+          "type": "cortex-debug",
+          "servertype": "openocd",
+          "liveWatch": {
+              "enabled": true,
+              "samplesPerSecond": 4
+          },
+          "configFiles": [
+              "interface/stlink.cfg",
+              "target/stm32l5x.cfg"
+          ],
+          "interface": "swd",
+          "showDevDebugOutput": "raw",
+          "v1": false,                            // ST-Link version
+          "runToEntryPoint": "main",              // Run to main and stop there [optional]
+          "svdFile": "debug/STM32L552.svd"    // SVD file to see registers [optional]
+      }
+  ]
+}
