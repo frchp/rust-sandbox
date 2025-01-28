@@ -13,9 +13,6 @@ fn main() -> ! {
   let rcc = &peripherals.RCC;
 
   // Setup clocks
-  rcc.apb2enr.modify(|_, w| w.syscfgen().set_bit());
-  rcc.apb1enr1.modify(|_, w| w.pwren().set_bit());
-
   rcc.ahb2enr.modify(|_, w| w.gpiocen().set_bit());
   rcc.ahb2enr.read().gpiocen(); // read to let enabling be done
 
