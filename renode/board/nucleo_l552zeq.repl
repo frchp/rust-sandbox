@@ -56,7 +56,6 @@ gpioPortA: GPIOPort.STM32_GPIOPort @ sysbus <0x42020000, +0x400>
 
 gpioPortB: GPIOPort.STM32_GPIOPort @ sysbus <0x42020400, +0x400>
     modeResetValue: 0xFFFFFEBF
-    outputSpeedResetValue: 0x00000080
     pullUpPullDownResetValue: 0x00000100
     numberOfAFs: 16
 
