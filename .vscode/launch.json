@@ -21,6 +21,17 @@
           "v1": false,                            // ST-Link version
           "runToEntryPoint": "main",              // Run to main and stop there [optional]
           "svdFile": "debug/STM32L552.svd"    // SVD file to see registers [optional]
-      }
+      },
+      {
+        "name": "Debug application in Renode",
+        "type": "cppdbg",
+        "request": "launch",
+        "preLaunchTask": "Run Renode",
+        "postDebugTask": "Close Renode",
+        "miDebuggerServerAddress": "localhost:3333",
+        "cwd": "${workspaceRoot}",
+        "miDebuggerPath": "arm-none-eabi-gdb",
+        "program": "${workspaceFolder}/target/thumbv8m.main-none-eabihf/debug/rust-sandbox",
+    }
   ]
 }

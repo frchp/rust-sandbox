@@ -31,6 +31,7 @@ fn main() -> ! {
   loop
   {
     // if button pressed (PC13), light up led(PC7), otherwise no
+    let _bits = gpioc.idr.read().idr13().bit_is_set();
     if gpioc.idr.read().idr13().bit_is_set()
     {
       gpioc.odr.write(|w| w.odr7().clear_bit());

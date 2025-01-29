@@ -1,83 +1,38 @@
-using "platforms/cpus/stm32l552.repl"
+// Custom repl file
+
+nvic: IRQControllers.NVIC @ sysbus 0xE000E000
+    priorityMask: 0xF0
+    systickFrequency: 32000000
+    IRQ -> cpu@0
+
+cpu: CPU.CortexM @ sysbus
+    cpuType: "cortex-m33"
+    nvic: nvic
+
+sram1: Memory.MappedMemory @ sysbus 0x20000000
+    size: 0x30000
 
 sram2: Memory.MappedMemory @ sysbus 0x20030000
     size: 0xFFD0000
 
-rcc: Python.PythonPeripheral @ sysbus 0x40021000
-    size: 0x400
-    initable: true
-    script: '''
-if request.isInit:
-   lastVal = 0
-   data = {'hsion': 1, 'pllon': 0, 'sw': 0, 'lsion': 0}
-self.NoisyLog("%s on FLIPFLOP at offset 0x%x, value 0x%x, length %d, %s" % (str(request.type), request.offset, request.value, request.length, str(data)))
-
-if request.isWrite:
-    if request.offset == 0x0:
-        # HSION [doc = "Bit 8 - HSI16 clock enable"]
-        data['hsion'] = (request.value >> 8) & 0x1
-        # PLLON [doc = "Bit 24 - PLL enable"]
-        data['pllon'] = (request.value >> 24) & 0x1
-    elif request.offset == 0x8:
-        # SW_W [doc = "Bits 0:2 - System clock switch"]
-        data['sw'] = request.value & 0x7
-    elif request.offset == 0x60:
-        data['lsion'] = request.value & 0x1
-elif request.isRead:
-    lastVal = 1 - lastVal
-    if request.offset == 0x0:
-        # request.value = lastVal * 0x83
-
-        # RCC_CR [doc = "0x00 - Clock control register"]
-        # HSION_RW [doc = "Bit 8 - HSI16 clock enable flag"]
-        # HSIRDY_R [doc = "Bit 10 - HSI16 clock ready flag"] # HSIRDY == HISON for this model
-        # PLLRDY [doc = "Bit 25 - PLL clock ready flag"]
-        request.value = (data['hsion'] << 8) | (data['hsion'] << 10) | (data['pllon'] << 25)
-    elif request.offset == 0x4:
-        request.value = lastVal * 0xFFFFFFF8
-    elif request.offset == 0x24:
-        request.value = 0x0
-    elif request.offset == 0x60:
-        request.value = (data['lsion'] << 1)
-    else:
-        # RCC_CFGR [doc = "0x08 - Clock configuration register"]
-        # SWS_R [doc = "Bits 3:5 - System clock switch status"]
-        # request.value = lastVal * 0xFFFFFFFF
-        request.value = data['sw'] << 3
-
-self.NoisyLog("  0x%x (%s)" % (request.value, str(data)))
-'''
+flash: Memory.MappedMemory @ sysbus 0x08000000
+    size: 0x80000
 
 gpioPortA: GPIOPort.STM32_GPIOPort @ sysbus <0x42020000, +0x400>
-    modeResetValue: 0xABFFFFFF
-    outputSpeedResetValue: 0x08000000
-    pullUpPullDownResetValue: 0x64000000
-    numberOfAFs: 16
-
 gpioPortB: GPIOPort.STM32_GPIOPort @ sysbus <0x42020400, +0x400>
-    modeResetValue: 0xFFFFFEBF
-    pullUpPullDownResetValue: 0x00000100
-    numberOfAFs: 16
-
 gpioPortC: GPIOPort.STM32_GPIOPort @ sysbus <0x42020800, +0x400>
-    modeResetValue: 0xFFFFFFFF
-    numberOfAFs: 16
 
 UserButton1: Miscellaneous.Button @ gpioPortC
     -> gpioPortC@13
 
 LED1: Miscellaneous.LED @ gpioPortC
 
-LED2: Miscellaneous.LED @ gpioPortB
-
-LED3: Miscellaneous.LED @ gpioPortA
-
-gpioPortB:
-    7 -> LED2@0
-
-gpioPortA:
-    9 -> LED3@0
-
 gpioPortC:
     7 -> LED1@0
 
+sysbus:
+    init:
+        Tag <0x40021000, 0x400213FF> "RCC" 0xFFFFFFFF
+
+        Tag <0x40007000 0x400> "PWR"
+        Tag <0xE0001000 0xffb> "DWT"

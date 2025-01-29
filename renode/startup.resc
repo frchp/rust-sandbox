@@ -14,15 +14,17 @@ echo "Platform loaded"
 echo "Load ELF file"
 sysbus LoadELF $bin_path
 
-# Print state
+# Logging
 logLevel -1 gpioPortC.LED1
+# sysbus.cpu LogFunctionNames true
+sysbus LogAllPeripheralsAccess true
 
 # Start the machine
-start
+machine StartGdbServer 3333
 
 # Print some helpful information
 echo ""
-echo "Emulation started. The LED should be blinking."
+echo "Emulation started."
 echo "To pause emulation, use: 'pause'"
 echo "To resume emulation, use: 'start'"
 echo "To press button, use: 'gpioPortC.UserButton1 Press'"
