@@ -1,0 +1,31 @@
+:name: STM32L552 Rust Renode
+:description: This script runs the rust generated binary on renode
+
+$name?="STM32L552_Rust"
+$bin_path?=@target/thumbv8m.main-none-eabihf/debug/rust-sandbox
+$platform_path?=@renode/board/nucleo_l552zeq.repl
+
+# Create Machine & Load config
+mach create $name
+echo "Machine created"
+machine LoadPlatformDescription $platform_path
+echo "Platform loaded"
+
+echo "Load ELF file"
+sysbus LoadELF $bin_path
+
+# Print state
+logLevel -1 gpioPortC.LED1
+
+# Start the machine
+start
+
+# Print some helpful information
+echo ""
+echo "Emulation started. The LED should be blinking."
+echo "To pause emulation, use: 'pause'"
+echo "To resume emulation, use: 'start'"
+echo "To press button, use: 'gpioPortC.UserButton1 Press'"
+echo "To release button, use: 'gpioPortC.UserButton1 Release'"
+echo "To press release button, use: 'gpioPortC.UserButton1 PressAndRelease'"
+echo ""
