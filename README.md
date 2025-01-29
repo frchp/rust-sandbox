@@ -26,7 +26,11 @@ Install Vs Code [Rust-Analyzer extension](https://marketplace.visualstudio.com/i
 - Check size `cargo size --target thumbv8m.main-none-eabihf --bin rust-sandbox -- -A`
 
 ## Run renode emulation :
-Run run_renode.bat
+Run `run_renode.bat`
+
+OR
+
+Run & Debug in VSCode : `Debug application in Renode`
 
 ## Doc :
 [Embedded Rust](https://docs.rust-embedded.org/book/)
