@@ -1,0 +1,38 @@
+// Custom repl file
+
+nvic: IRQControllers.NVIC @ sysbus 0xE000E000
+    priorityMask: 0xF0
+    systickFrequency: 32000000
+    IRQ -> cpu@0
+
+cpu: CPU.CortexM @ sysbus
+    cpuType: "cortex-m33"
+    nvic: nvic
+
+sram1: Memory.MappedMemory @ sysbus 0x20000000
+    size: 0x30000
+
+sram2: Memory.MappedMemory @ sysbus 0x20030000
+    size: 0xFFD0000
+
+flash: Memory.MappedMemory @ sysbus 0x08000000
+    size: 0x80000
+
+gpioPortA: GPIOPort.STM32_GPIOPort @ sysbus <0x42020000, +0x400>
+gpioPortB: GPIOPort.STM32_GPIOPort @ sysbus <0x42020400, +0x400>
+gpioPortC: GPIOPort.STM32_GPIOPort @ sysbus <0x42020800, +0x400>
+
+UserButton1: Miscellaneous.Button @ gpioPortC
+    -> gpioPortC@13
+
+LED1: Miscellaneous.LED @ gpioPortC
+
+gpioPortC:
+    7 -> LED1@0
+
+sysbus:
+    init:
+        Tag <0x40021000, 0x400213FF> "RCC" 0xFFFFFFFF
+
+        Tag <0x40007000 0x400> "PWR"
+        Tag <0xE0001000 0xffb> "DWT"

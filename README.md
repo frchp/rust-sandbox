@@ -1,7 +1,7 @@
 ## Dependencies :
 [rustup](https://rustup.rs/) will install Rust, Cargo.
 Install Vs Code [Rust-Analyzer extension](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
-
+[Renode](https://builds.renode.io/renode-latest.msi)
 
 ## Misc :
 - To create project : `cargo new --bin`
@@ -25,5 +25,13 @@ Install Vs Code [Rust-Analyzer extension](https://marketplace.visualstudio.com/i
 - Check exe `cargo readobj --target thumbv8m.main-none-eabihf --bin rust-sandbox -- --file-header`
 - Check size `cargo size --target thumbv8m.main-none-eabihf --bin rust-sandbox -- -A`
 
+## Run renode emulation :
+Run `run_renode.bat`
+
+OR
+
+Run & Debug in VSCode : `Debug application in Renode`
+
 ## Doc :
 [Embedded Rust](https://docs.rust-embedded.org/book/)
+[Renode tutorial](https://interrupt.memfault.com/blog/intro-to-renode#automating-setup-with-a-resc-script)
