@@ -17,6 +17,7 @@ sysbus LoadELF $bin_path
 # Logging
 logLevel -1 gpioPortD.UserLED
 showAnalyzer sysbus.usart2
+showAnalyzer sysbus.can1
 # sysbus.cpu LogFunctionNames true
 # sysbus LogAllPeripheralsAccess true
 
