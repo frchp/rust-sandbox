@@ -2,43 +2,46 @@
 #![no_main]
 #![no_std]
 
-use stm32l5::stm32l552;
+use stm32f4::stm32f407;
 use panic_halt as _;
 use cortex_m_rt::entry;
 
 #[entry]
 fn main() -> ! {
-  let peripherals = stm32l552::Peripherals::take().unwrap();
-  let gpioc = &peripherals.GPIOC;
+  let peripherals = stm32f407::Peripherals::take().unwrap();
+  let gpiod = &peripherals.GPIOD;
+  let gpioa = &peripherals.GPIOA;
   let rcc = &peripherals.RCC;
 
   // Setup clocks
-  rcc.ahb2enr.modify(|_, w| w.gpiocen().set_bit());
-  rcc.ahb2enr.read().gpiocen(); // read to let enabling be done
+  rcc.ahb1enr.modify(|_, w| w.gpioaen().set_bit());
+  rcc.ahb1enr.read().gpioaen(); // read to let enabling be done
+  rcc.ahb1enr.modify(|_, w| w.gpioden().set_bit());
+  rcc.ahb1enr.read().gpioden(); // read to let enabling be done
 
   // Setup button PC13
     // No pull
-  gpioc.pupdr.modify(|_, w| w.pupdr13().floating());
+  gpioa.pupdr.modify(|_, w| w.pupdr0().floating());
     // Mode input
-  gpioc.moder.modify(|_, w| w.moder13().input());
+  gpioa.moder.modify(|_, w| w.moder0().input());
   // Setup LED PC7
     // Push pull
-  gpioc.otyper.modify(|_, w| w.ot7().push_pull());
+  gpiod.otyper.modify(|_, w| w.ot12().push_pull());
     // Mode output
-  gpioc.moder.modify(|_, w| w.moder7().output());
+  gpiod.moder.modify(|_, w| w.moder12().output());
 
   // infinite loop; just so we don't leave this stack frame
   loop
   {
-    // if button pressed (PC13), light up led(PC7), otherwise no
-    let _bits = gpioc.idr.read().idr13().bit_is_set();
-    if gpioc.idr.read().idr13().bit_is_set()
+    // if button pressed (PA0), light up led(PD12), otherwise no
+    let _bits = gpioa.idr.read().idr0().bit_is_set();
+    if gpioa.idr.read().idr0().bit_is_set()
     {
-      gpioc.odr.write(|w| w.odr7().clear_bit());
+      gpiod.odr.write(|w| w.odr12().clear_bit());
     }
     else
     {
-      gpioc.odr.write(|w| w.odr7().set_bit());
+      gpiod.odr.write(|w| w.odr12().set_bit());
     }
   }
 }

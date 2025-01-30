@@ -121,7 +121,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-halt",
- "stm32l5",
+ "stm32f4",
 ]
 
 [[package]]
@@ -149,10 +149,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "388a1df253eca08550bef6c72392cfe7c30914bf41df5269b68cbd6ff8f570a3"
 
 [[package]]
-name = "stm32l5"
+name = "stm32f4"
 version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce8cfb7c2cc05fc951fe863b175b0e7ab627d8c684d71867b51d2bb10fa80f46"
+checksum = "fb94729242cd1aebe6dab42a2ca0131985ae93bc3ab2751b680df724bb35528d"
 dependencies = [
  "bare-metal 1.0.0",
  "cortex-m",
