@@ -31,7 +31,7 @@
         "miDebuggerServerAddress": "localhost:3333",
         "cwd": "${workspaceRoot}",
         "miDebuggerPath": "arm-none-eabi-gdb",
-        "program": "${workspaceFolder}/target/thumbv8m.main-none-eabihf/debug/rust-sandbox",
+        "program": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/rust-sandbox",
     }
   ]
 }
